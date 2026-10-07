@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRADEX | Student Grade Calculator - JECRC Foundation</title>
+  <meta name="description" content="Student Grade Calculator using Python - Internship Project Demonstration for JECRC Foundation">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+</head>
+<body>
+
+  <!-- Institutional Top Header -->
+  <header class="institution-bar">
+    <div class="institution-brand">
+      <div class="brand-badge">
+        <span>⭐ 27 YEARS</span>
+      </div>
+      <div class="brand-title">
+        <h1>GRADEX • Student Grade Calculator</h1>
+        <p>JECRC Foundation • Python Project Prototype (Slide 10/15)</p>
+      </div>
+    </div>
+    <div class="nav-controls">
+      <button class="btn-ctrl" id="theme-toggle" title="Toggle Light / Dark mode">🌓 Theme</button>
+      <button class="btn-ctrl" id="fullscreen-btn" title="Toggle Fullscreen for Presentation">⛶ Fullscreen</button>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="tabs-nav">
+    <button class="tab-btn active" data-tab="tab-calculator">🧮 Interactive Calculator</button>
+    <button class="tab-btn" data-tab="tab-presentation">📽️ Slide 10/15 Presentation</button>
+    <button class="tab-btn" data-tab="tab-leaderboard">🏆 Session Leaderboard <span id="record-count-badge" style="background:#ea580c;color:white;font-size:0.7rem;padding:2px 6px;border-radius:10px;">0</span></button>
+    <button class="tab-btn" data-tab="tab-code">🐍 Python Code & Viva Guide</button>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="container">
+
+    <!-- TAB 1: CALCULATOR & PROTOTYPE -->
+    <section id="tab-calculator" class="tab-content">
+      
+      <!-- 4-Stage Pipeline Banner matching Slide 10/15 -->
+      <div class="pipeline-banner">
+        <div class="pipeline-header">
+          <div>
+            <span class="badge-tag">Proposed / Demonstration Pipeline</span>
+            <h2 style="font-size: 1.15rem; margin-top: 4px; font-weight: 800;">4-Stage Execution Architecture</h2>
+          </div>
+          <div style="font-size: 0.85rem; color: var(--text-muted);">
+            Slide Flow: <strong>Input ➔ Calculation ➔ Grade ➔ Result</strong>
+          </div>
+        </div>
+
+        <div class="pipeline-stepper">
+          <div class="pipeline-step active" id="step-1-indicator">
+            <div class="step-num">1</div>
+            <div class="step-info">
+              <h4>Input (Marks)</h4>
+              <p>Student details & scores</p>
+            </div>
+          </div>
+          <div class="pipeline-step" id="step-2-indicator">
+            <div class="step-num">2</div>
+            <div class="step-info">
+              <h4>Calculation</h4>
+              <p>Total, % & SGPA</p>
+            </div>
+          </div>
+          <div class="pipeline-step" id="step-3-indicator">
+            <div class="step-num">3</div>
+            <div class="step-info">
+              <h4>Grade</h4>
+              <p>Conditional evaluation</p>
+            </div>
+          </div>
+          <div class="pipeline-step" id="step-4-indicator">
+            <div class="step-num">4</div>
+            <div class="step-info">
+              <h4>Result</h4>
+              <p>Final report & status</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Viva Presets Bar -->
+      <div class="preset-bar">
+        <span class="preset-title">⚡ Presentation Demos:</span>
+        <button class="preset-btn" id="preset-topper">⭐ Distinction Topper (92.4%)</button>
+        <button class="preset-btn" id="preset-average">📘 First Class (70.8%)</button>
+        <button class="preset-btn" id="preset-fail">⚠️ Edge-Case Fail (&lt;40 in Math)</button>
+        <button class="preset-btn" id="preset-reset" style="margin-left:auto;">🔄 Clear All</button>
+      </div>
+
+      <!-- Main Application Grid -->
+      <div class="app-grid">
+        
+        <!-- LEFT COLUMN: INPUT & CONDITIONAL MATRIX -->
+        <div>
+          <!-- Step 1: Student Information -->
+          <div class="card">
+            <h3 class="card-title">
+              <span>👤 Step 1: Student Profile</span>
+            </h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="student-name">Student Full Name</label>
+                <input type="text" id="student-name" class="input-field" placeholder="e.g. Aarav Sharma" value="Aarav Sharma">
+              </div>
+              <div class="form-group">
+                <label for="student-roll">Roll Number / Enrollment</label>
+                <input type="text" id="student-roll" class="input-field" placeholder="e.g. 21JECRC042" value="21JECRC042" style="text-transform: uppercase;">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="student-branch">Department / Branch</label>
+                <input type="text" id="student-branch" class="input-field" value="Computer Science & Engineering">
+              </div>
+              <div class="form-group">
+                <label for="student-semester">Semester / Academic Session</label>
+                <input type="text" id="student-semester" class="input-field" value="Semester IV • 2026">
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 1 Continued: Subject Marks -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+              <h3 class="card-title" style="margin-bottom:0; border:none; padding:0;">
+                <span>📚 Subject Marks Input (Max 100, Pass 40)</span>
+              </h3>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Real-time validation</span>
+            </div>
+
+            <div class="subjects-wrapper" id="subjects-container">
+              <!-- Dynamically populated via JS -->
+            </div>
+
+            <div class="add-sub-bar">
+              <input type="text" id="new-subject-name" class="input-field" placeholder="Add custom subject (e.g. AI / ML)" style="flex:1;">
+              <button class="btn-secondary" id="btn-add-subject">➕ Add Subject</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Condition-Based Grade Determination Matrix -->
+          <div class="card">
+            <h3 class="card-title">
+              <span>⚖️ Step 3: Condition-Based Grade Matrix</span>
+            </h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 12px;">
+              The system evaluates conditions in order using Python's <code>if / elif / else</code> structure.
+            </p>
+
+            <table class="grade-table">
+              <thead>
+                <tr>
+                  <th>Percentage Range</th>
+                  <th>Grade</th>
+                  <th>Performance Remark</th>
+                  <th>Criteria Rule</th>
+                </tr>
+              </thead>
+              <tbody id="grade-rules-body">
+                <tr class="grade-row" data-grade="A+">
+                  <td><strong>&ge; 90%</strong></td>
+                  <td><span class="grade-badge a-plus">A+</span></td>
+                  <td>Outstanding (Distinction)</td>
+                  <td><code>percentage &gt;= 90</code></td>
+                </tr>
+                <tr class="grade-row" data-grade="A">
+                  <td><strong>&ge; 80%</strong></td>
+                  <td><span class="grade-badge a">A</span></td>
+                  <td>Excellent (First Class)</td>
+                  <td><code>percentage &gt;= 80</code></td>
+                </tr>
+                <tr class="grade-row" data-grade="B">
+                  <td><strong>&ge; 70%</strong></td>
+                  <td><span class="grade-badge b">B</span></td>
+                  <td>Very Good</td>
+                  <td><code>percentage &gt;= 70</code></td>
+                </tr>
+                <tr class="grade-row" data-grade="C">
+                  <td><strong>&ge; 60%</strong></td>
+                  <td><span class="grade-badge c">C</span></td>
+                  <td>Good</td>
+                  <td><code>percentage &gt;= 60</code></td>
+                </tr>
+                <tr class="grade-row" data-grade="D">
+                  <td><strong>&ge; 50%</strong></td>
+                  <td><span class="grade-badge d">D</span></td>
+                  <td>Satisfactory</td>
+                  <td><code>percentage &gt;= 50</code></td>
+                </tr>
+                <tr class="grade-row" data-grade="E">
+                  <td><strong>&ge; 40%</strong></td>
+                  <td><span class="grade-badge e">E</span></td>
+                  <td>Needs Improvement</td>
+                  <td><code>percentage &gt;= 40</code></td>
+                </tr>
+                <tr class="grade-row" data-grade="F">
+                  <td><strong>&lt; 40%</strong></td>
+                  <td><span class="grade-badge f">F</span></td>
+                  <td>Fail / Re-examination</td>
+                  <td><code>else</code></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Pass/Fail Alert Box -->
+            <div id="rule-callout-box" class="rule-callout success">
+              <span id="rule-icon">✔</span>
+              <div id="rule-msg">
+                <strong>Subject Pass Criteria Satisfied:</strong> All subjects meet the minimum threshold of 40 marks.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: STEP 2 COMPUTATION & STEP 4 REPORT CARD -->
+        <div>
+          <!-- Step 2: Live Calculation Cards -->
+          <div class="card">
+            <h3 class="card-title">
+              <span>⚡ Step 2: Calculation Summary</span>
+            </h3>
+
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-val" id="stat-total">0 / 500</div>
+                <div class="stat-label">Total Marks</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-val" id="stat-percentage" style="color: var(--accent-orange);">0.00%</div>
+                <div class="stat-label">Percentage</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-val" id="stat-gpa" style="color: var(--success);">0.00</div>
+                <div class="stat-label">Approx SGPA (10.0)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Final Result & Marksheet -->
+          <div class="card" id="card-report">
+            <h3 class="card-title">
+              <span>📋 Step 4: Official Report Card Preview</span>
+            </h3>
+
+            <div class="report-card-preview" id="report-card">
+              <div class="report-header">
+                <div class="report-institution">JECRC FOUNDATION</div>
+                <div class="report-sub">Department of Computer Science & Engineering</div>
+                <span class="report-badge-intern">Student Academic Performance Evaluation</span>
+              </div>
+
+              <div class="report-meta-grid">
+                <div class="meta-item"><span>Student Name:</span><span id="rep-name">Aarav Sharma</span></div>
+                <div class="meta-item"><span>Roll Number:</span><span id="rep-roll">21JECRC042</span></div>
+                <div class="meta-item"><span>Branch:</span><span id="rep-branch">Computer Science</span></div>
+                <div class="meta-item"><span>Session Date:</span><span id="rep-date">07 Oct 2026</span></div>
+              </div>
+
+              <table class="report-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Subject</th>
+                    <th>Max</th>
+                    <th>Obtained</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="rep-marks-tbody">
+                  <!-- Generated dynamically -->
+                </tbody>
+              </table>
+
+              <div class="report-summary-box">
+                <div class="sum-cell">
+                  <div class="sum-val" id="rep-total">462 / 500</div>
+                  <div class="sum-label">Total Marks</div>
+                </div>
+                <div class="sum-cell">
+                  <div class="sum-val" id="rep-pct">92.40%</div>
+                  <div class="sum-label">Percentage</div>
+                </div>
+                <div class="sum-cell">
+                  <div class="sum-val" id="rep-grade" style="color:var(--success);">A+</div>
+                  <div class="sum-label" id="rep-remark">Outstanding</div>
+                </div>
+                <div class="sum-cell">
+                  <div class="sum-val" id="rep-status" style="color:var(--success);">PASS ✔</div>
+                  <div class="sum-label">Final Result</div>
+                </div>
+              </div>
+
+              <div id="rep-backlog-warning" style="display:none; color:var(--danger); font-size:0.8rem; font-weight:700; text-align:center; margin-bottom:12px;">
+                ⚠️ BACKLOG SUBJECT(S): <span id="rep-backlog-list">None</span>
+              </div>
+
+              <div class="report-footer">
+                <div>
+                  <div style="font-weight:700; color:#0f172a;">GRADEX System Verification</div>
+                  <div style="font-size:0.7rem;">Automated Python Pipeline v2.4</div>
+                </div>
+                <div class="sign-line">
+                  Authorized Signatory
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions Bar -->
+            <div class="action-bar">
+              <button class="btn-primary" id="btn-print-report">
+                🖨️ Print / Save Marksheet PDF
+              </button>
+              <button class="btn-secondary" id="btn-save-record">
+                💾 Save to Leaderboard
+              </button>
+              <button class="btn-secondary" id="btn-export-csv">
+                📥 Export CSV
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- TAB 2: PRESENTATION SLIDE 10/15 MODE -->
+    <section id="tab-presentation" class="tab-content" style="display:none;">
+      <div class="slide-replica">
+        <div class="slide-header">
+          <div class="brand-badge">⭐ CELEBRATING 27 YEARS OF BUILDING TALENT</div>
+          <div style="font-size: 1.5rem; font-weight: 900; color: #0f2b5c;">JECRC Foundation</div>
+        </div>
+
+        <div class="slide-title-area">
+          <h2 style="font-size: 1.9rem; margin-bottom: 6px;">Python Application / Project</h2>
+          <span class="badge-tag" style="font-size: 0.85rem; padding: 6px 16px;">PROPOSED / DEMONSTRATION APPLICATION</span>
+          <h3 style="font-size: 1.4rem; color: #1e3a8a; margin-top: 14px; font-weight: 800;">
+            Student Grade Calculator using Python
+          </h3>
+          <p style="font-style: italic; color: #64748b; font-size: 0.95rem; margin-top: 6px;">
+            The certificate confirms course completion but does not specify a completed project. The application below is proposed to demonstrate the concepts learned.
+          </p>
+        </div>
+
+        <!-- 4-Step Diagram from Slide 10/15 -->
+        <div class="slide-flowchart">
+          <div class="flow-box light">Input (Marks)</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-box">Calculation</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-box light">Grade</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-box">Result</div>
+        </div>
+
+        <!-- 4 Steps with Detailed Python Mapping -->
+        <div class="slide-steps-list">
+          <div class="slide-step-item">
+            <div class="step-circle">1</div>
+            <div>
+              <strong>Accept student marks</strong>
+              <div style="font-size:0.85rem; color:#64748b;">
+                Python concepts: <code>input()</code>, <code>float()</code> type-casting, dictionary data structure <code>{'Python': 95}</code>, error handling with <code>try...except ValueError</code>.
+              </div>
+            </div>
+          </div>
+
+          <div class="slide-step-item">
+            <div class="step-circle">2</div>
+            <div>
+              <strong>Calculate total / percentage</strong>
+              <div style="font-size:0.85rem; color:#64748b;">
+                Python concepts: <code>sum(marks.values())</code>, <code>len(marks)</code>, formula <code>(total / maximum) * 100</code>, SGPA scale conversion.
+              </div>
+            </div>
+          </div>
+
+          <div class="slide-step-item">
+            <div class="step-circle">3</div>
+            <div>
+              <strong>Determine grade using conditions</strong>
+              <div style="font-size:0.85rem; color:#64748b;">
+                Python concepts: <code>if / elif / else</code> conditional ladder, strict pass evaluation (minimum 40 marks in each subject via list comprehension).
+              </div>
+            </div>
+          </div>
+
+          <div class="slide-step-item">
+            <div class="step-circle">4</div>
+            <div>
+              <strong>Display final result</strong>
+              <div style="font-size:0.85rem; color:#64748b;">
+                Python concepts: Formatted output with f-strings, report card generation, CSV file creation using <code>csv.writer</code>, ANSI terminal styling.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: right; font-weight: 700; color: #64748b; margin-top: 20px;">
+          Slide 10 / 15
+        </div>
+      </div>
+
+      <!-- Quick Presenter Tips -->
+      <div class="card">
+        <h3 class="card-title">🎤 Presenter Script & Talking Points for Slide 10/15</h3>
+        <ul style="padding-left: 20px; font-size: 0.92rem; line-height: 1.8; color: var(--text-secondary);">
+          <li><strong>Opening Statement:</strong> "Respected faculty, I present GRADEX, an end-to-end Student Grade Calculator developed using core Python concepts."</li>
+          <li><strong>Architecture:</strong> "As illustrated on Slide 10, the system operates as a 4-stage pipeline: Input, Calculation, Grade, and Result."</li>
+          <li><strong>Real-World Edge Case:</strong> "A key algorithmic highlight is our composite pass condition: even if a student attains 85% overall, if they score under 40 in any subject, the system flags the backlog and assigns Grade F."</li>
+          <li><strong>Deployment:</strong> "The project is provided both as a Python terminal utility (<code>gradex.py</code>) and as a modern deployable web interface with instant CSV export and report card generation."</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TAB 3: LEADERBOARD & CLASS ANALYTICS -->
+    <section id="tab-leaderboard" class="tab-content" style="display:none;">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+          <h3 class="card-title" style="margin-bottom:0; border:none; padding:0;">
+            <span>🏆 Session Class Leaderboard</span>
+          </h3>
+          <div style="display:flex; gap:10px;">
+            <button class="btn-secondary" id="btn-export-all-csv">📥 Download Class CSV</button>
+            <button class="btn-secondary" id="btn-load-sample-class">⚡ Load Demo Class (5 Students)</button>
+            <button class="btn-secondary" id="btn-clear-leaderboard" style="color:var(--danger);">🗑️ Clear</button>
+          </div>
+        </div>
+
+        <!-- Class KPI Analytics -->
+        <div class="stats-grid" style="margin-bottom:20px;">
+          <div class="stat-card">
+            <div class="stat-val" id="lead-total-count">0</div>
+            <div class="stat-label">Students Evaluated</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" id="lead-class-avg">0.0%</div>
+            <div class="stat-label">Class Average</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" id="lead-pass-rate">0.0%</div>
+            <div class="stat-label">Pass Percentage</div>
+          </div>
+        </div>
+
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Student Name</th>
+              <th>Roll Number</th>
+              <th>Total Marks</th>
+              <th>Percentage</th>
+              <th>Grade</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-tbody">
+            <tr>
+              <td colspan="8" style="text-align:center; padding:24px; color:var(--text-muted);">
+                No student records saved yet. Evaluate a student in the Calculator tab and click "Save to Leaderboard"!
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 4: PYTHON SOURCE & VIVA GUIDE -->
+    <section id="tab-code" class="tab-content" style="display:none;">
+      <div class="card">
+        <h3 class="card-title">
+          <span>🐍 Python Implementation (`gradex.py`)</span>
+        </h3>
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:14px;">
+          This is the standalone Python source code that runs directly in any terminal with Python 3.8+ (zero external dependencies).
+        </p>
+
+        <div class="code-container">
+          <pre><code id="python-code-display"># Loading code...</code></pre>
+        </div>
+      </div>
+
+      <!-- Viva Q&A Guide -->
+      <div class="card">
+        <h3 class="card-title">
+          <span>💡 Viva / Project Examination Questions & Answers</span>
+        </h3>
+        
+        <div style="display:flex; flex-direction:column; gap:16px; margin-top:14px;">
+          <div style="background:var(--bg-main); padding:16px; border-radius:8px; border-left:4px solid var(--primary);">
+            <div style="font-weight:700; color:var(--primary); margin-bottom:4px;">Q1: Why did you use a Dictionary to store marks instead of two separate lists?</div>
+            <div style="font-size:0.88rem; color:var(--text-secondary);">
+              <strong>Answer:</strong> A dictionary establishes a direct key-value mapping between the subject name and its corresponding score. It provides <code>O(1)</code> average-time access, allows easy iteration using <code>marks.items()</code>, and enables calculations via built-in functions like <code>sum(marks.values())</code>.
+            </div>
+          </div>
+
+          <div style="background:var(--bg-main); padding:16px; border-radius:8px; border-left:4px solid var(--primary);">
+            <div style="font-weight:700; color:var(--primary); margin-bottom:4px;">Q2: How does the application handle invalid marks entered by the user?</div>
+            <div style="font-size:0.88rem; color:var(--text-secondary);">
+              <strong>Answer:</strong> We wrapped user input in a <code>while True</code> loop with a <code>try...except ValueError</code> block. If a user enters non-numeric text or values outside <code>0 to 100</code>, the error is caught, an informative error message is displayed, and the prompt re-asks without terminating the program.
+            </div>
+          </div>
+
+          <div style="background:var(--bg-main); padding:16px; border-radius:8px; border-left:4px solid var(--primary);">
+            <div style="font-weight:700; color:var(--primary); margin-bottom:4px;">Q3: How is the Pass/Fail condition determined?</div>
+            <div style="font-size:0.88rem; color:var(--text-secondary);">
+              <strong>Answer:</strong> We implement a two-tier evaluation: first, the overall percentage dictates the grade letter using <code>if / elif / else</code>; second, the <code>check_pass()</code> function verifies that every single subject score is &ge; 40. If any subject is &lt; 40, the final status is set to Fail with backlogs listed.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Notification Toast -->
+  <div id="toast" style="position:fixed; bottom:24px; right:24px; background:#0f2b5c; color:white; padding:12px 20px; border-radius:8px; box-shadow:0 10px 25px rgba(0,0,0,0.2); display:none; z-index:100; font-weight:600; font-size:0.9rem;">
+    Notification
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
